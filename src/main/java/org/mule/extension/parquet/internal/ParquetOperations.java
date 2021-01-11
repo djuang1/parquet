@@ -71,7 +71,8 @@ public class ParquetOperations {
 			writer.write((Record) avroRecord);
 			System.out.print(avroRecord.toString());
 		}
-		writer.close();		
+		writer.close();	
+		dataStreamReader.close(); 
 		
 		return body;		
 	}
