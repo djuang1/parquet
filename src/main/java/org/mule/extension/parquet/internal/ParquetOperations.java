@@ -85,13 +85,11 @@ public class ParquetOperations {
 				.withDictionaryEncoding(false).build();
 	}
 
-	// "/Users/dejim.juang/Documents/Demos/userdata1.parquet"
 	@MediaType(value = MediaType.APPLICATION_JSON, strict = false)
 	@DisplayName("Read Parquet File")
 	public String readParquet(
 			@DisplayName("Parquet File Location")
 			@org.mule.runtime.extension.api.annotation.param.display.Path(type = FILE, location = EXTERNAL) String parquetFilePath
-			//@Optional(defaultValue = PAYLOAD) InputStream body
 			) {
 
 		ParquetReader<SimpleRecord> reader = null;
