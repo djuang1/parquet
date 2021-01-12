@@ -10,6 +10,25 @@ Using Parquet format has two advantages
 * Reduced storage
 * Query performance
 
+## Installation Instructions
+
+1.  Clone the repo
+2.  Deploy the connector to your local Maven repo  `mvn clean install`
+3.  Add the connector dependency to your project `pom.xml` file
+
+```
+<dependency>
+    <groupId>com.dejim</groupId>
+    <artifactId>parquet</artifactId>
+    <version>1.0.6-SNAPSHOT</version>
+    <classifier>mule-plugin</classifier>
+</dependency>
+```
+
+## Reporting Issues
+
+You can report new issues at this link https://github.com/djuang1/parquet/issues.
+
 ## Operations
 
 ### Read Parquet File
