@@ -7,6 +7,7 @@ import static org.mule.runtime.api.meta.model.display.PathModel.Location.EXTERNA
 import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
 
 import java.io.IOException;
+import java.io.BufferedOutputStream;
 
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileStream;
@@ -19,6 +20,8 @@ import org.apache.hadoop.fs.Path;
 import org.apache.parquet.avro.AvroParquetWriter;
 import org.apache.parquet.avro.AvroSchemaConverter;
 import org.apache.parquet.avro.AvroWriteSupport;
+import org.apache.parquet.io.OutputFile;
+import org.apache.parquet.io.PositionOutputStream;
 import org.apache.parquet.hadoop.ParquetFileReader;
 import org.apache.parquet.hadoop.ParquetReader;
 import org.apache.parquet.hadoop.ParquetWriter;
@@ -43,10 +46,43 @@ import javax.annotation.Nonnull;
 
 import static org.mule.runtime.extension.api.annotation.param.Optional.PAYLOAD;
 
+//import org.mule.extension.parquet.internal.ParquetBufferedWriter;
+
 public class ParquetOperations {
 
 	@MediaType(value = ANY, strict = false)
-	@DisplayName("Write Avro to Parquet File")
+	@DisplayName("Write Avro to Parquet - Stream")
+	public InputStream writeAvroToParquetStream(@Optional(defaultValue = PAYLOAD) InputStream body,
+	@Optional(defaultValue = "UNCOMPRESSED") @DisplayName("Compression Codec") CompressionCodecName codec
+	) throws IOException {
+
+		GenericDatumReader<Object> greader = new GenericDatumReader<Object>();
+		DataFileStream dataStreamReader = new DataFileStream(body, greader);
+		Schema avroSchema = dataStreamReader.getSchema();
+		ParquetBufferedWriter outputFile = new ParquetBufferedWriter();
+
+		ParquetWriter<Object> writer = AvroParquetWriter.builder(outputFile)
+			.withRowGroupSize(256 * 1024 * 1024)
+			.withPageSize(1024 * 1024)
+			.withSchema(avroSchema)
+			.withConf(new Configuration()).withCompressionCodec(codec).withValidation(false)
+			.withDictionaryEncoding(false)
+			.build();
+
+		GenericRecord avroRecord = null;
+		while (dataStreamReader.hasNext()) {
+			avroRecord = (GenericRecord) dataStreamReader.next();
+			writer.write((Record) avroRecord);
+		}
+		writer.close();	
+		dataStreamReader.close(); 
+
+		return new ByteArrayInputStream(outputFile.toArray());
+    }
+	
+	
+	@MediaType(value = ANY, strict = false)
+	@DisplayName("Write Avro to Parquet - File")
 	public InputStream writeAvroToParquet(@Optional(defaultValue = PAYLOAD) InputStream body,
 	@DisplayName("File Output Location")
 	@org.mule.runtime.extension.api.annotation.param.display.Path(type = FILE, location = EXTERNAL) String parquetFilePath,
@@ -69,7 +105,7 @@ public class ParquetOperations {
 		while (dataStreamReader.hasNext()) {
 			avroRecord = (GenericRecord) dataStreamReader.next();
 			writer.write((Record) avroRecord);
-			System.out.print(avroRecord.toString());
+			//System.out.print(avroRecord.toString());
 		}
 		writer.close();	
 		dataStreamReader.close(); 
