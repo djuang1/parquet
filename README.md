@@ -1,7 +1,6 @@
 # Parquet Extension for Mule 4.x
 Mule SDK connector that provides the ability to read Parquet files into JSON or write Parquet files from Avro data.
 
-
 ## Overview
 [Apache Parquet](https://parquet.apache.org/) is a columnar data storage format, which provides a way to store tabular data column wise. Columns of same date-time are stored together as rows in Parquet format, so as to offer better storage, compression and data retrieval.
 
@@ -56,3 +55,8 @@ Writing data to a parquet file isn't a straightforward process. It requires a sc
 * Compression Codec - You can select the compression technique when configuring the operation. The GZip compression rate is higher than Snappy, and creates smaller files. However, Snappy generally provides better performance.
 
 <img src="https://raw.githubusercontent.com/djuang1/parquet/main/doc/img/write_avro_to_parquet.png" width="600px">
+
+```
+Author: Dejim Juang - dejimj@gmail.com
+Last Update: October 22, 2022
+```
