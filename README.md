@@ -20,7 +20,7 @@ Using Parquet format has two advantages
 <dependency>
     <groupId>com.dejim</groupId>
     <artifactId>parquet</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.0.15-SNAPSHOT</version>
     <classifier>mule-plugin</classifier>
 </dependency>
 ```
@@ -31,7 +31,15 @@ You can report new issues at this link https://github.com/djuang1/parquet/issues
 
 ## Operations
 
-### Read Parquet File
+### Read Parquet - Stream
+
+This operation allows you to read a parquet file from an InputStream (e.g. #[payload]) Data can be coming from S3 or other connector that provides Streaming instead of needing to read it from the file system. It returns the data back in JSON format.
+
+### Write Avro to Parquet - Stream
+
+This operation allows you to write a parquet file to an InputStream (e.g. #[payload]). Instead of writing to disk, you can output the data directly to S3 or other connector that provides Streaming capabilities.
+
+### Read Parquet - File
 
 This operation allows you to read a parquet file from a local file system. It returns the data back in JSON format.
 
@@ -39,7 +47,7 @@ This operation allows you to read a parquet file from a local file system. It re
 
 <img src="https://raw.githubusercontent.com/djuang1/parquet/main/doc/img/read_parquet.png" width="600px">
 
-### Write Avro to Parquet File
+### Write Avro to Parquet - File
 
 Writing data to a parquet file isn't a straightforward process. It requires a schema that needs to be defined around the data. This operation allows you leverage [Avro format support](https://docs.mulesoft.com/mule-runtime/4.3/dataweave-formats-avro) in MuleSoft to format the data using DataWeave before writing it to a parquet file.
 
