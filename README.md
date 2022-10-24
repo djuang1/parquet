@@ -19,7 +19,7 @@ Using Parquet format has two advantages
 <dependency>
     <groupId>com.dejim</groupId>
     <artifactId>parquet</artifactId>
-    <version>1.0.15-SNAPSHOT</version>
+    <version>1.0.24-SNAPSHOT</version>
     <classifier>mule-plugin</classifier>
 </dependency>
 ```
