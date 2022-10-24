@@ -1,6 +1,7 @@
 package org.mule.extension.parquet.internal;
 
 import static org.mule.extension.parquet.internal.io.OutputFile.nioPathToOutputFile;
+import org.mule.extension.parquet.internal.int96.ParquetTimestampUtils;
 
 import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
 import static org.mule.runtime.api.meta.model.display.PathModel.Location.EXTERNAL;
@@ -35,9 +36,25 @@ import org.mule.runtime.extension.api.annotation.param.MediaType;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 
+import org.apache.avro.data.TimeConversions;
+
+import org.apache.avro.Conversion;
+import org.apache.avro.io.BinaryEncoder;
+
+import org.apache.avro.io.DatumReader;
+
+import java.time.Instant;
+import org.apache.avro.LogicalType;
+
+import org.apache.avro.io.Decoder;
+import org.apache.avro.io.DecoderFactory;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -150,34 +167,103 @@ public class ParquetOperations {
 	}
 
 	@MediaType(value = MediaType.APPLICATION_JSON, strict = false)
-	@DisplayName("Read Parquet - Stream")
-	public String readParquetStream(@Optional(defaultValue = PAYLOAD) InputStream body){
+	@DisplayName("Get Parquet Schema - Stream")
+	public String getParquetSchema(@Optional(defaultValue = PAYLOAD) InputStream body) {
 
 		String item = null;
-		OutputStream outputStream = new ByteArrayOutputStream(1024); 
+		String schema = null;
+
+		try {
+			ParquetBufferedReader inputFile = new ParquetBufferedReader(item, body);
+			ParquetReader<GenericRecord> r = AvroParquetReader.<GenericRecord>builder(inputFile)
+					.disableCompatibility()
+					.build();
+			GenericRecord firstRecord = r.read();
+			if (firstRecord == null) {
+				throw new IOException("Can't process empty Parquet file");
+			}
+			schema = firstRecord.getSchema().toString(true);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return schema;
+	}
+
+	@MediaType(value = MediaType.APPLICATION_JSON, strict = false)
+	@DisplayName("Read Parquet - Stream")
+	public String readParquetStream(@Optional(defaultValue = PAYLOAD) InputStream body) {
+
+		String item = null;
+		//OutputStream outputStream = new ByteArrayOutputStream(1024);
+		List<String> records = new ArrayList<>();
 
 		try {
 			ParquetBufferedReader inputFile = new ParquetBufferedReader(item, body);
 
 			ParquetReader<GenericRecord> r = AvroParquetReader.<GenericRecord>builder(inputFile)
-                                                                             .disableCompatibility()
-                                                                             .build();
+					.disableCompatibility()
+					.build();
 			GenericRecord record;
-			
+			//JsonEncoder encoder = null;
+
 			while ((record = r.read()) != null) {
+				//DatumWriter<GenericRecord> writer = new GenericDatumWriter<>(record.getSchema());
+				//encoder = EncoderFactory.get().jsonEncoder(record.getSchema(), outputStream);
+				//encoder.setIncludeNamespace(false);
 
-				DatumWriter<GenericRecord> writer = new GenericDatumWriter<>(record.getSchema());
-				JsonEncoder encoder = EncoderFactory.get().jsonEncoder(record.getSchema(), outputStream);
+				String jsonRecord = deserialize(record.getSchema(), toByteArray(record.getSchema(), record)).toString();
+				jsonRecord = ParquetTimestampUtils.convertInt96(jsonRecord);
+				records.add(jsonRecord);
 
-				writer.write(record, encoder);
-				encoder.flush();
+				//writer.write(record, encoder);
+				//encoder.flush();
 			}
-			
-		}  catch (IllegalArgumentException e) {
+
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return outputStream.toString();
+		return records.toString();
+	}
+
+	private GenericRecord deserialize(Schema schema, byte[] data) throws IOException {
+		GenericData.get().addLogicalTypeConversion(new TimestampMillisConversion());
+		InputStream is = new ByteArrayInputStream(data);
+		Decoder decoder = DecoderFactory.get().binaryDecoder(is, null);
+		DatumReader<GenericRecord> reader = new GenericDatumReader<>(schema, schema, GenericData.get());
+		return reader.read(null, decoder);
+	}
+
+	private byte[] toByteArray(Schema schema, GenericRecord genericRecord) throws IOException {
+		GenericDatumWriter<GenericRecord> writer = new GenericDatumWriter<>(schema);
+		writer.getData().addLogicalTypeConversion(new TimeConversions.TimestampMillisConversion());
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(baos, null);
+		writer.write(genericRecord, encoder);
+		encoder.flush();
+		return baos.toByteArray();
+	}
+
+	public static class TimestampMillisConversion extends Conversion<String> {
+		public TimestampMillisConversion() {
+		}
+
+		public Class<String> getConvertedType() {
+			return String.class;
+		}
+
+		public String getLogicalTypeName() {
+			return "timestamp-millis";
+		}
+
+		public String fromLong(Long millisFromEpoch, Schema schema, LogicalType type) {
+			return Instant.ofEpochMilli(millisFromEpoch).toString();
+		}
+
+		public Long toLong(String timestamp, Schema schema, LogicalType type) {
+			return new Long(timestamp);
+		}
 	}
 }
