@@ -173,10 +173,14 @@ public class ParquetOperations {
 		String item = null;
 		String schema = null;
 
+		Configuration conf = new Configuration();
+		conf.setBoolean(org.apache.parquet.avro.AvroReadSupport.READ_INT96_AS_FIXED, true);
+
 		try {
 			ParquetBufferedReader inputFile = new ParquetBufferedReader(item, body);
 			ParquetReader<GenericRecord> r = AvroParquetReader.<GenericRecord>builder(inputFile)
 					.disableCompatibility()
+					.withConf(conf)
 					.build();
 			GenericRecord firstRecord = r.read();
 			if (firstRecord == null) {
@@ -201,8 +205,12 @@ public class ParquetOperations {
 		try {
 			ParquetBufferedReader inputFile = new ParquetBufferedReader(item, body);
 
+			Configuration conf = new Configuration();
+			conf.setBoolean(org.apache.parquet.avro.AvroReadSupport.READ_INT96_AS_FIXED, true);
+
 			ParquetReader<GenericRecord> r = AvroParquetReader.<GenericRecord>builder(inputFile)
 					.disableCompatibility()
+					.withConf(conf)
 					.build();
 			GenericRecord record;
 			//JsonEncoder encoder = null;
