@@ -118,7 +118,6 @@ public class ParquetOperations {
 		while (dataStreamReader.hasNext()) {
 			avroRecord = (GenericRecord) dataStreamReader.next();
 			writer.write((Record) avroRecord);
-			// System.out.print(avroRecord.toString());
 		}
 		writer.close();
 		dataStreamReader.close();
