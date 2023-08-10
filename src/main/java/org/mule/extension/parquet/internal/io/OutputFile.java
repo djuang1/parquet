@@ -19,8 +19,7 @@ public final class OutputFile {
   private static final int IO_BUF_SIZE = 16 * 1024;
 
   public static org.apache.parquet.io.OutputFile nioPathToOutputFile(@Nonnull final Path file) {
-    //noinspection ConstantConditions
-    assert file != null;
+
     return new org.apache.parquet.io.OutputFile() {
       @Override
       public PositionOutputStream create(long blockSizeHint) throws IOException {
@@ -47,38 +46,46 @@ public final class OutputFile {
   private static PositionOutputStream makePositionOutputStream(@Nonnull Path file, int ioBufSize, boolean trunc)
           throws IOException
   {
-    final OutputStream output = new BufferedOutputStream(
-            Files.newOutputStream(file, CREATE, trunc ? TRUNCATE_EXISTING : APPEND), ioBufSize);
+    //final OutputStream output = new BufferedOutputStream(
+    //        Files.newOutputStream(file, CREATE, trunc ? TRUNCATE_EXISTING : APPEND), ioBufSize);
+
+    OutputStream output = Files.newOutputStream(file, CREATE, trunc ? TRUNCATE_EXISTING : APPEND);
+    BufferedOutputStream bufferedOutput = new BufferedOutputStream(output, ioBufSize);
+        
 
     return new PositionOutputStream() {
       private long position = 0;
 
       @Override
       public void write(int b) throws IOException {
-        output.write(b);
+        bufferedOutput.write(b);
         position++;
       }
 
       @Override
       public void write(@Nonnull byte[] b) throws IOException {
-        output.write(b);
+        bufferedOutput.write(b);
         position += b.length;
       }
 
       @Override
       public void write(@Nonnull byte[] b, int off, int len) throws IOException {
-        output.write(b, off, len);
+        bufferedOutput.write(b, off, len);
         position += len;
       }
 
       @Override
       public void flush() throws IOException {
-        output.flush();
+        bufferedOutput.flush();
       }
 
       @Override
       public void close() throws IOException {
-        output.close();
+        try {
+          bufferedOutput.close();
+        } finally {
+          output.close();
+        }
       }
 
       @Override
