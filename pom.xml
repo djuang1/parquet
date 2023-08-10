@@ -104,7 +104,7 @@
         </pluginRepository>
     </pluginRepositories>
 
-    <build>
+    <!-- <build>
         <plugins>
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
@@ -129,6 +129,6 @@
                 <inherited>false</inherited>
             </plugin>
         </plugins>
-    </build>
+    </build> -->
 
 </project>
