@@ -1,13 +1,8 @@
 package org.mule.extension.parquet.internal.connection.provider;
 
-import org.mule.extension.parquet.internal.ParquetConnection;
 import org.mule.runtime.api.connection.ConnectionException;
-import org.mule.runtime.extension.api.annotation.param.Parameter;
-import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
 import org.mule.runtime.api.connection.PoolingConnectionProvider;
-import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
-import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,24 +10,10 @@ public class ParquetConnectionProvider implements PoolingConnectionProvider<Parq
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ParquetConnectionProvider.class);
 
- /**
-  * A parameter that is always required to be configured.
-  */
-  @Parameter
-  @Placement(order = 1)
-  private String requiredParameter;
-
- /**
-  * A parameter that is not required to be configured by the user.
-  */
-  @DisplayName("Friendly Name")
-  @Parameter
-  @Optional(defaultValue = "100")
-  private int optionalParameter;
 
   @Override
   public ParquetConnection connect() throws ConnectionException {
-    return new ParquetConnection(requiredParameter + ":" + optionalParameter);
+    return new ParquetConnection(null);
   }
 
   @Override

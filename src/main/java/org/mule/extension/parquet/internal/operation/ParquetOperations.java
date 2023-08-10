@@ -61,13 +61,11 @@ import java.nio.file.Paths;
 
 import javax.annotation.Nonnull;
 
-import static org.mule.runtime.extension.api.annotation.param.Optional.PAYLOAD;
-
 public class ParquetOperations {
 
 	@MediaType(value = ANY, strict = false)
 	@DisplayName("Write Avro to Parquet - Stream")
-	public InputStream writeAvroToParquetStream(@Optional(defaultValue = PAYLOAD) InputStream body,
+	public InputStream writeAvroToParquetStream(InputStream body,
 			@Optional(defaultValue = "UNCOMPRESSED") @DisplayName("Compression Codec") CompressionCodecName codec)
 			throws IOException {
 
@@ -165,7 +163,7 @@ public class ParquetOperations {
 
 	@MediaType(value = MediaType.APPLICATION_JSON, strict = false)
 	@DisplayName("Get Parquet Schema - Stream")
-	public String getParquetSchema(@Optional(defaultValue = PAYLOAD) InputStream body) {
+	public String getParquetSchema(InputStream body) {
 
 		String item = null;
 		String schema = null;

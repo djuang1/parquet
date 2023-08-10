@@ -1,4 +1,4 @@
-package org.mule.extension.parquet.internal;
+package org.mule.extension.parquet.internal.connection.provider;
 
 public final class ParquetConnection {
 
