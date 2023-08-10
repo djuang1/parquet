@@ -98,7 +98,7 @@ public class ParquetOperations {
 
 	@MediaType(value = ANY, strict = false)
 	@DisplayName("Write Avro to Parquet - File")
-	public InputStream writeAvroToParquet(@Optional(defaultValue = PAYLOAD) InputStream body,
+	public InputStream writeAvroToParquet(InputStream body,
 			@DisplayName("File Output Location") @org.mule.runtime.extension.api.annotation.param.display.Path(type = FILE, location = EXTERNAL) String parquetFilePath,
 			@Optional(defaultValue = "UNCOMPRESSED") @DisplayName("Compression Codec") CompressionCodecName codec)
 			throws IOException {
@@ -193,7 +193,7 @@ public class ParquetOperations {
 
 	@MediaType(value = MediaType.APPLICATION_JSON, strict = false)
 	@DisplayName("Read Parquet - Stream")
-	public String readParquetStream(@Optional(defaultValue = PAYLOAD) InputStream body) {
+	public String readParquetStream(InputStream body) {
 
 		String item = null;
 		List<String> records = new ArrayList<>();

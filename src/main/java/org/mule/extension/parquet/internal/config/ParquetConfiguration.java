@@ -12,7 +12,7 @@ import org.mule.runtime.extension.api.annotation.param.display.Placement;
 public class ParquetConfiguration {
 
   @Parameter
-  @Placement(order = 1)
+  @Placement(order = 1,tab = "General")
   private String configId;
 
   public String getConfigId(){
