@@ -16,6 +16,6 @@ import org.mule.runtime.extension.api.annotation.license.RequiresEnterpriseLicen
 @Extension(name = "Parquet Connector", category = CERTIFIED, vendor = "Dejim Juang")
 @RequiresEnterpriseLicense(allowEvaluationLicense = true)
 @Configurations(ParquetConfiguration.class)
-public class ParquetExtension {
+public class ParquetConnector {
 
 }
