@@ -73,7 +73,7 @@ public class ParquetOperations {
 			throws IOException {
 
 		GenericDatumReader<Object> greader = new GenericDatumReader<Object>();
-		DataFileStream dataStreamReader = new DataFileStream(body, greader);
+		DataFileStream<?> dataStreamReader = new DataFileStream(body, greader);
 		Schema avroSchema = dataStreamReader.getSchema();
 
 		ParquetBufferedWriter outputFile = new ParquetBufferedWriter();
@@ -105,7 +105,7 @@ public class ParquetOperations {
 			throws IOException {
 
 		GenericDatumReader<Object> greader = new GenericDatumReader<Object>();
-		DataFileStream dataStreamReader = new DataFileStream(body, greader);
+		DataFileStream<?> dataStreamReader = new DataFileStream(body, greader);
 
 		// convert Avro schema to Parquet schema
 		Schema avroSchema = dataStreamReader.getSchema();

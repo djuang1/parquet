@@ -1,8 +1,8 @@
-package org.mule.extension.parquet.internal.config;
+package org.mule.extension.parquet.internal.extension;
 
 import static org.mule.runtime.api.meta.Category.CERTIFIED;
 
-import org.mule.extension.parquet.internal.ParquetConfiguration;
+import org.mule.extension.parquet.internal.config.ParquetConfiguration;
 import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.runtime.extension.api.annotation.Configurations;
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
