@@ -1,5 +1,6 @@
-package org.mule.extension.parquet.internal;
+package org.mule.extension.parquet.internal.connection.provider;
 
+import org.mule.extension.parquet.internal.ParquetConnection;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.Optional;

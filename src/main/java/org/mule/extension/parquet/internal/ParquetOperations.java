@@ -198,7 +198,6 @@ public class ParquetOperations {
 	public String readParquetStream(@Optional(defaultValue = PAYLOAD) InputStream body) {
 
 		String item = null;
-		//OutputStream outputStream = new ByteArrayOutputStream(1024);
 		List<String> records = new ArrayList<>();
 
 		try {
@@ -212,19 +211,11 @@ public class ParquetOperations {
 					.withConf(conf)
 					.build();
 			GenericRecord record;
-			//JsonEncoder encoder = null;
 
 			while ((record = r.read()) != null) {
-				//DatumWriter<GenericRecord> writer = new GenericDatumWriter<>(record.getSchema());
-				//encoder = EncoderFactory.get().jsonEncoder(record.getSchema(), outputStream);
-				//encoder.setIncludeNamespace(false);
-
 				String jsonRecord = deserialize(record.getSchema(), toByteArray(record.getSchema(), record)).toString();
 				jsonRecord = ParquetTimestampUtils.convertInt96(jsonRecord);
 				records.add(jsonRecord);
-
-				//writer.write(record, encoder);
-				//encoder.flush();
 			}
 
 		} catch (IllegalArgumentException e) {
@@ -266,10 +257,12 @@ public class ParquetOperations {
 			return "timestamp-millis";
 		}
 
+		@Override
 		public String fromLong(Long millisFromEpoch, Schema schema, LogicalType type) {
 			return Instant.ofEpochMilli(millisFromEpoch).toString();
 		}
 
+		@Override
 		public Long toLong(String timestamp, Schema schema, LogicalType type) {
 			return new Long(timestamp);
 		}
