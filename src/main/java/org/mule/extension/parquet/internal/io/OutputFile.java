@@ -52,7 +52,6 @@ public final class OutputFile {
     OutputStream output = Files.newOutputStream(file, CREATE, trunc ? TRUNCATE_EXISTING : APPEND);
     BufferedOutputStream bufferedOutput = new BufferedOutputStream(output, ioBufSize);
         
-
     return new PositionOutputStream() {
       private long position = 0;
 
