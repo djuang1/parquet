@@ -1,7 +1,7 @@
 package org.mule.extension.parquet.internal.config;
 
-import org.mule.extension.parquet.internal.ParquetOperations;
 import org.mule.extension.parquet.internal.connection.provider.ParquetConnectionProvider;
+import org.mule.extension.parquet.internal.operation.ParquetOperations;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProviders;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -12,7 +12,7 @@ import org.mule.runtime.extension.api.annotation.param.display.Placement;
 public class ParquetConfiguration {
 
   @Parameter
-  @Placement
+  @Placement(order = 1)
   private String configId;
 
   public String getConfigId(){

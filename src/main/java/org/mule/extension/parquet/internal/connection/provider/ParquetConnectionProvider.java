@@ -7,7 +7,7 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
 import org.mule.runtime.api.connection.PoolingConnectionProvider;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
-
+import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +19,7 @@ public class ParquetConnectionProvider implements PoolingConnectionProvider<Parq
   * A parameter that is always required to be configured.
   */
   @Parameter
+  @Placement(order = 1)
   private String requiredParameter;
 
  /**

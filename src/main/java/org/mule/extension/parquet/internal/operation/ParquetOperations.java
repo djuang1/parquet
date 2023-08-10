@@ -1,7 +1,9 @@
-package org.mule.extension.parquet.internal;
+package org.mule.extension.parquet.internal.operation;
 
 import static org.mule.extension.parquet.internal.io.OutputFile.nioPathToOutputFile;
 
+import org.mule.extension.parquet.internal.ParquetBufferedReader;
+import org.mule.extension.parquet.internal.ParquetBufferedWriter;
 import org.mule.extension.parquet.internal.int96.ParquetTimestampUtils;
 
 import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
@@ -19,15 +21,12 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.parquet.avro.AvroParquetReader;
 import org.apache.parquet.avro.AvroParquetWriter;
-import org.apache.parquet.avro.AvroSchemaConverter;
-import org.apache.parquet.avro.AvroWriteSupport;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.parquet.hadoop.ParquetFileReader;
 import org.apache.parquet.hadoop.ParquetReader;
 import org.apache.parquet.hadoop.ParquetWriter;
 import org.apache.parquet.hadoop.metadata.CompressionCodecName;
 import org.apache.parquet.hadoop.metadata.ParquetMetadata;
-import org.apache.parquet.schema.MessageType;
 import org.apache.parquet.tools.json.JsonRecordFormatter;
 import org.apache.parquet.tools.read.SimpleReadSupport;
 import org.apache.parquet.tools.read.SimpleRecord;
