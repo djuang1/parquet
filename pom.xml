@@ -4,17 +4,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.dejim</groupId>
+    <groupId>b85b361d-0842-4b70-af37-2723c2c3ae7e</groupId>
     <artifactId>parquet</artifactId>
-    <version>1.0.28-SNAPSHOT</version>
+    <version>1.0.28</version>
     <packaging>mule-extension</packaging>
     <name>Parquet Extension</name>
 
     <parent>
         <groupId>org.mule.extensions</groupId>
         <artifactId>mule-modules-parent</artifactId>
-        <version>1.1.3</version>
+        <version>1.1.6</version>
     </parent>
+
+	<distributionManagement>
+        <repository>
+            <id>anypoint-exchange</id>
+            <name>Exchange2 Repository</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -74,4 +83,52 @@
 		</dependency>
 		
 	</dependencies>
+
+	<repositories>
+        <repository>
+            <id>anypoint-exchange</id>
+            <name>Corporate Repository</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-releases</id>
+            <name>mulesoft release repository</name>
+            <layout>default</layout>
+            <url>http://repository.mulesoft.org/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.mule.tools.maven</groupId>
+                <artifactId>exchange-mule-maven-plugin</artifactId>
+                <version>0.0.13</version>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>exchange-pre-deploy</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>exchange-deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <inherited>false</inherited>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

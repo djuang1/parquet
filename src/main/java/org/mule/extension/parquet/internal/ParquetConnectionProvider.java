@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 public class ParquetConnectionProvider implements PoolingConnectionProvider<ParquetConnection> {
 
-  private final Logger LOGGER = LoggerFactory.getLogger(ParquetConnectionProvider.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ParquetConnectionProvider.class);
 
  /**
   * A parameter that is always required to be configured.

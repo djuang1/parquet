@@ -13,7 +13,7 @@ import org.mule.runtime.extension.api.annotation.license.RequiresEnterpriseLicen
  * and sources are going to be declared.
  */
 @Xml(prefix = "parquet")
-@Extension(name = "Parquet Connector", category = CERTIFIED, vendor = "Dejim Juang")
+@Extension(name = "Parquet Connector - Mule 4", category = CERTIFIED, vendor = "Dejim Juang")
 @RequiresEnterpriseLicense(allowEvaluationLicense = true)
 @Configurations(ParquetConfiguration.class)
 public class ParquetExtension {
