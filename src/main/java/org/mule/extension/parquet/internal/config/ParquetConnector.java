@@ -1,4 +1,4 @@
-package org.mule.extension.parquet.internal.extension;
+package org.mule.extension.parquet.internal.config;
 
 import static org.mule.runtime.api.meta.Category.CERTIFIED;
 

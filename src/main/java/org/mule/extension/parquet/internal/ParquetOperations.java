@@ -54,8 +54,10 @@ import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
 
 import javax.annotation.Nonnull;
@@ -107,8 +109,6 @@ public class ParquetOperations {
 
 		// convert Avro schema to Parquet schema
 		Schema avroSchema = dataStreamReader.getSchema();
-		MessageType parquetSchema = new AvroSchemaConverter().convert(avroSchema);
-		AvroWriteSupport writeSupport = new AvroWriteSupport(parquetSchema, avroSchema);
 
 		java.nio.file.Path outputPath = Paths.get(parquetFilePath);
 
@@ -209,10 +209,10 @@ public class ParquetOperations {
 					.disableCompatibility()
 					.withConf(conf)
 					.build();
-			GenericRecord record;
+			GenericRecord genrecord;
 
-			while ((record = r.read()) != null) {
-				String jsonRecord = deserialize(record.getSchema(), toByteArray(record.getSchema(), record)).toString();
+			while ((genrecord = r.read()) != null) {
+				String jsonRecord = deserialize(genrecord.getSchema(), toByteArray(genrecord.getSchema(), genrecord)).toString();
 				jsonRecord = ParquetTimestampUtils.convertInt96(jsonRecord);
 				records.add(jsonRecord);
 			}
