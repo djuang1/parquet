@@ -1,6 +1,7 @@
 package org.mule.extension.parquet.internal;
 
 import static org.mule.extension.parquet.internal.io.OutputFile.nioPathToOutputFile;
+
 import org.mule.extension.parquet.internal.int96.ParquetTimestampUtils;
 
 import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
