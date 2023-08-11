@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.dejim</groupId>
     <artifactId>parquet</artifactId>
-    <version>1.0.30</version>
+    <version>1.0.31</version>
     <packaging>mule-extension</packaging>
     <name>Parquet Connector</name>
 
@@ -71,7 +71,51 @@
 			<groupId>org.apache.parquet</groupId>
 			<artifactId>parquet-avro</artifactId>
 			<version>1.12.3</version>
-		</dependency>		
+		</dependency>	
+		
+		<dependency>
+			<groupId>org.apache.parquet</groupId>
+			<artifactId>parquet-tools</artifactId>
+			<version>1.11.2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/parquet-tools-1.11.2.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.parquet</groupId>
+			<artifactId>parquet-common</artifactId>
+			<version>1.12.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/parquet-common-1.12.3.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.parquet</groupId>
+			<artifactId>parquet-encoding</artifactId>
+			<version>1.12.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/parquet-encoding-1.12.3.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.parquet</groupId>
+			<artifactId>parquet-column</artifactId>
+			<version>1.12.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/parquet-column-1.12.3.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.parquet</groupId>
+			<artifactId>parquet-hadoop</artifactId>
+			<version>1.12.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/parquet-hadoop-1.12.3.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.parquet</groupId>
+			<artifactId>parquet-avro</artifactId>
+			<version>1.12.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/parquet-avro-1.12.3.jar</systemPath>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>

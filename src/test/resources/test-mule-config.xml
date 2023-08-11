@@ -2,18 +2,11 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns:parquet="http://www.mulesoft.org/schema/mule/parquet"
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-          http://www.mulesoft.org/schema/mule/parquet http://www.mulesoft.org/schema/mule/parquet/current/mule-parquet.xsd">
+      http://www.mulesoft.org/schema/mule/parquet http://www.mulesoft.org/schema/mule/parquet/current/mule-parquet.xsd">
 
-    <parquet:config name="config" configId="configId">
-        <cohere:connection requiredParameter="aValue" />
-    </parquet:config>
 
-    <flow name="sayHiFlow">
-        <parquet:say-hi person="Mariano Gonzalez"/>
-    </flow>
-
-    <flow name="retrieveInfoFlow">
-        <parquet:retrieve-info config-ref="config"/>
+    <flow name="getParquetSchemaFlow">
+        <parquet:get-parquet-schema body="#[vars.file]"/>
     </flow>
 
 </mule>
